@@ -10,6 +10,7 @@
      https://hackmd.io/e4G0PoXoREu9ZG4yTv9xvw?view#%E5%B0%88%E6%A1%88
      楊老闆Uwsgi
      https://hackmd.io/@T-pTTDjuS7-wiigIYk3eRw/Hkgk7pM6t
+     秉之Docker架設
      
 
 部署至Cloud Run：
@@ -41,3 +42,12 @@
      ＊＊要注意port的問題＊＊
      
      
+
+
+-------------------------------------------------------------------
+資料閱讀區：
+
+Container Registry
+      
+      https://ithelp.ithome.com.tw/articles/10220807
+      https://blog.cloud-ace.tw/application-modernization/serverless/cloud-run-api-server/
