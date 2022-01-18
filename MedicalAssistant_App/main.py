@@ -141,7 +141,7 @@ def handle_pic(event):
 
         # 傳入資源網址，並預測取得結果
         print('public url', blob.public_url)
-        result = requests.get(vmurl +':7777/'+ blob.public_url.split('//')[1])
+        result = requests.get(vmurl +':7777/'+ blob.public_url)
         print("預測結果是" + result.text)
 
         line_id = event.source.user_id
