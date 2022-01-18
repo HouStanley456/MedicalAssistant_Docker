@@ -12,7 +12,6 @@ import os
 parent_dir =os.path.dirname(os.path.abspath(__file__))
 config = configparser.ConfigParser()
 config.read(parent_dir + '/config.ini')
-config.read('config.ini')
 
 GOOGLE_API_KEY = "AIzaSyBC9OXMvpGIVJ5FVakJ00oQXEPq9j5E804"
 submit_url = config.get('line-bot', 'end_point')+"/success"

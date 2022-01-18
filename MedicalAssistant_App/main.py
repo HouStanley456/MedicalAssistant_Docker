@@ -39,8 +39,9 @@ from google.cloud import storage
 app = Flask(__name__)
 CORS(app)
 
+parent_dir =os.path.dirname(os.path.abspath(__file__))
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(parent_dir + '/config.ini')
 vmurl='http://35.202.193.99'
 
 
