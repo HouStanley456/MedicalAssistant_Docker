@@ -33,14 +33,18 @@ import pandas as pd
 from PIL import Image
 
 import configparser
+import os 
 
 from google.cloud import storage
 
 app = Flask(__name__)
 CORS(app)
 
+
+parent_dir =os.path.dirname(os.path.abspath(__file__))
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(parent_dir + '/config.ini')
+
 vmurl='http://35.202.193.99'
 
 
@@ -119,8 +123,8 @@ def handle_pic(event):
 
         # 傳入資源網址，並預測取得結果
         print('public url', blob.public_url)
-        #result = predict(blob.public_url)
-	result = requests.get(vmurl +':7777/'+ blob.public.url.split('//')[1])
+        a = blob.public.url.split('//')[1]
+        result = requests.get(vmurl + ':7777/' + a)
         print("預測結果是" + result.text)
 
         line_id = event.source.user_id
