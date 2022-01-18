@@ -2,7 +2,6 @@
 
 from flask import Flask,request, abort, render_template, Response,jsonify
 from flask_cors import CORS, cross_origin
-from matplotlib.pyplot import text
 # app = Flask(__name__)
 from addresstoGeocodev2 import *
 from linebot.models import *
