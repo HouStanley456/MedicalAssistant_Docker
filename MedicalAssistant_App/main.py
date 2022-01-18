@@ -45,7 +45,7 @@ vmurl='http://35.202.193.99'
 
 
 ### if your want testing ####
-@app.application_Test("/<path:input>", methods=["GET"])
+@app.route("/<path:input>", methods=["GET"])
 def testing(input):
     if input != None:
         if input == "qa":
