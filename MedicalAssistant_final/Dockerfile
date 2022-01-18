@@ -4,7 +4,8 @@ WORKDIR /
 COPY . /
 
 #安裝環境   
-RUN python3 -m pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt 
+RUN python3 -m pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir -r requirements.txt && \
+pip install --upgrade google-api-python-client && pip install google.cloud.storage
 
 WORKDIR /
 
