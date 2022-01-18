@@ -2,7 +2,7 @@ from textpredict import predicttext, DataDic
 from flask import Flask
 
 app=Flask(__name__)
-@app.route("/<text>", methods=['get'])
+@app.route("/path:<text>", methods=['get'])
 def predict(text):
     output = predicttext(text)
     return output
