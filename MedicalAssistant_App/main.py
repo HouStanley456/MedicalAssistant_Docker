@@ -48,6 +48,22 @@ config.read(parent_dir + '/config.ini')
 vmurl='http://35.202.193.99'
 
 
+### if your want testing ####
+@app.application_Test("/<path:input>", methods=["GET"])
+def testing(input):
+    if input != None:
+        if input == "qa":
+           output = requests.get(vmurl + ":6666/123") #文字模型測試
+        if input == "skin":
+            output = request.get(vmurl + ":7777/images.chinatimes.com/newsphoto/2020-12-11/656/20201211003336.jpg")
+            #圖片模型測試
+        return output
+    else:
+        print("請輸入參數")
+        pass 
+
+
+
 # Message api - Channel access token
 line_bot_api = LineBotApi(config.get('line-bot', 'channel_access_token'))
 # Message api - Channel secret
