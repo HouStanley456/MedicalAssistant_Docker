@@ -41,7 +41,7 @@ CORS(app)
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-vmurl='http://35.202.193.99/'
+vmurl='http://35.202.193.99'
 
 
 # Message api - Channel access token
@@ -120,7 +120,7 @@ def handle_pic(event):
         # 傳入資源網址，並預測取得結果
         print('public url', blob.public_url)
         result = predict(blob.public_url)
-	result = requests.get(vmurl + blob.public_url)
+	result = requests.get(vmurl +'7777/'+blob.public_url)
         print("預測結果是" + result)
 
         line_id = event.source.user_id
@@ -390,7 +390,7 @@ def handle_message(event):
                     is_last_two_bert = lastTwoSentence[1][0] == '我想進一步了解我的症狀'
 
                 if is_last_one_bert:
-                    pretext = requests.get(vmurl + mtext)
+                    pretext = requests.get(vmurl +':6666/'+ mtext)
 			
                     setChatSQL(line_id, event.message.id, 1, event.message.text, pretext)
                     line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="傳送地圖(Location)會得到附近星數最高且評論最多的醫院"), TextSendMessage(text=pretext, quick_reply=QuickReply(
