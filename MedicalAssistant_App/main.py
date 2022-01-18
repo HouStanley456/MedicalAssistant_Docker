@@ -141,8 +141,8 @@ def handle_pic(event):
 
         # 傳入資源網址，並預測取得結果
         print('public url', blob.public_url)
-        result = requests.get(vmurl +':7777/'+ blob.public_url)
-        print("預測結果是" + result.text)
+        result = requests.get(vmurl +':7777/'+ blob.public_url).text
+        print("預測結果是" + result)
 
         line_id = event.source.user_id
         setChatSQL(line_id, event.message.id, 2, path[1::], result)
