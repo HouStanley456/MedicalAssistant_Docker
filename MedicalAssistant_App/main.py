@@ -559,9 +559,9 @@ def excuteSQL(sql_text):
     執行 SQL 不回傳
     :param sql_text: 主要為 新增/修改/刪除
     """
-    connection = mysql.connector.connect(host='localhost',
+    connection = mysql.connector.connect(host=config.get('mysql', 'host'),
                                          database='healthrobot',
-                                         user='root',
+                                         user=config.get('mysql', 'user_name'),
                                          password=config.get('mysql', 'pd')
                                          )
     mycursor = connection.cursor()
@@ -577,9 +577,9 @@ def returnSQL(sql_text):
     :return: 回傳值
     """
     print('return sql text', sql_text)
-    connection = mysql.connector.connect(host='localhost',
+    connection = mysql.connector.connect(host=config.get('mysql', 'host'),
                                          database='healthrobot',
-                                         user='root',
+                                         user=config.get('mysql', 'user_name'),
                                          password=config.get('mysql', 'pd')
                                          )
     mycursor = connection.cursor()
