@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>生理資訊輸入</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="row mx-3">
+        <div class="col-12">
+            <label>身高(公分)</label>
+            <input type="text" id="height" class="form-control" />
+            <br />
+            <label>體重(公斤)</label>
+            <input type="text" id="weight" class="form-control" />
+            <br />
+            <label>血壓(收縮壓mmHg - 高)</label>
+            <input type="text" id="pressureH" class="form-control" />
+            <br />
+            <label>血壓(舒張壓mmHg - 低)</label>
+            <input type="text" id="pressureL" class="form-control" />
+            <br />
+            <label>血氧(%)</label>
+            <input type="text" id="bo" class="form-control" />
+            <br />
+            <label>血糖(mg/dL [毫克/分升])</label>
+            <input type="text" id="bs" class="form-control" />
+            <br />
+
+
+
+<!--            <label>日期</label>-->
+<!--            <input type="date" id="datetime" value="" class="form-control" />-->
+<!--            <br />-->
+<!--            <label>包廂</label>-->
+<!--            <select id="sel_room" class="form-control">-->
+<!--                <option selected>生龍廳</option>-->
+<!--                <option>活虎廳</option>-->
+<!--                <option>美鳳廳</option>-->
+<!--                <option>帥凰廳</option>-->
+<!--                <option>不使用包廂</option>-->
+<!--            </select>-->
+<!--            <br />-->
+            <button class="btn btn-primary btn-block" id="sure">確定</button>
+        </div>
+    </div>
+
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+	<script>
+        function initializeLiff(myLiffId) {
+            liff.init({liffId: myLiffId });
+        }
+
+    function pushMsg(height, weight, pressureH, pressureL, bo, bs) {
+        if (height == '' || weight == '' || pressureH == '' || pressureL == '' || bo == '' || bs == '') {  //資料檢查
+            alert('每個項目都必須輸入！');
+            return;
+        }
+        var msg = "#";  //回傳訊息字串
+        msg = msg + liff.getDecodedIDToken().sub + "/";
+        msg = msg + height + "/";
+        msg = msg + weight + "/";
+        msg = msg + pressureH + "/";
+        msg = msg + pressureL + "/";
+        msg = msg + bo + "/";
+        msg = msg + bs;
+
+        liff.sendMessages([
+            {
+              type: 'text',
+              text: msg
+            }
+        ])
+            .then(() => {
+                liff.closeWindow();
+            });
+    }
+
+    $(document).ready(function () {
+        initializeLiff('{{ liffid }}');  //接收傳遞的liffid參數
+        $('#sure').click(function (e) {  //按下確定鈕
+            pushMsg($('#height').val(), $('#weight').val(), $('#pressureH').val(), $('#pressureL').val() , $('#bo').val() , $('#bs').val());
+        });
+    });
+</script>
+</body>
+</html>

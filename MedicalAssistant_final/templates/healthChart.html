@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>個人體檢紀錄</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style type="text/css">
+    img {
+      width: 100%;
+    }
+    </style>
+</head>
+
+<body class="container-fluid">
+    <div class="row mt-3">
+        <div class="col-12" id="img-content">
+
+        </div>
+    </div>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+    let ngrokUrl = '{{ngrokpath}}';
+    let userId = null;
+
+    function initializeLiff(myLiffId) {
+        liff.init({liffId: myLiffId });
+    }
+
+    var timeoutID = setTimeout(GFG_Fun, 2000);
+
+    function GFG_Fun() {
+            userId = liff.getDecodedIDToken().sub;
+
+            var img = document.createElement('img');
+            img.src = ngrokUrl+'/photo/'+userId+'.png';
+            document.getElementById('img-content').appendChild(img);
+            down.innerHTML = "Image Element Added.";
+    }
+
+    $(document).ready(function () {
+        initializeLiff('{{ liffid }}');
+        timeoutID();
+    })
+
+</script>
+</body>
+</html>

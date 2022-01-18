@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "spatial-lock-335806",
+  "private_key_id": "3e870e222d300285a3019dd7eede774256d372cf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC2A3UF/OWhIBAH\nn+Hh5N5Q1BscWfRitdaSKqmhi/fl4ZzTJjl9RDs/nONgWTXV/wved/RmbCG7VBg2\n8fwQN/oZyNF7H6oAJImB6iyjNiV0IQu7aXsnW67sRnfAjETyLQhINr7QLM84irw2\nLfbmG3gPqpmhorcgANtwx9BL0EYL7HhVLHBFa+wgbpsbrhxsf1WyNYwkRO7I49co\nWgLrHgyjpwW9AJArJ0SGgE4V+A5cKCKTv2MuDSYG4N5DVT41KEMF5YdG+6Y0KbUC\n27tNr6cVrcGY8Ef/JmGHu9mGU+WGJwxz6v5Ha2ELTWr4jvDXmVaveyBhyMU1T4w7\n/eR0evGLAgMBAAECggEACZ2HePBXbdp57k/ZyNYPO+Q7UGqczfrUNzbjbOIuOj81\nH98k6gNeQT83sIHV+xRKW2TT4ktJFufbkEov/5Ktdt+UgsrKmiT+p1XTKNt17BDI\n2WGPp3sg87YfTRU77ofxfZB4JnA6PD7xWsgKgzUlSRKWo3grRhi1fwZB8Jdenpzh\nfbAKcO2DcNnhYT/iN9naEXBxPKpUc9MZbM/TsA9Kp7tNJSTpWDFBc5qiHfmLHrSj\nD+WogN0T5aQt36V/sG3PUkl/8jtKll162F8oOSKAuruVwKl/CgA3NHRUzW9N5WmI\nh1AIWvhooUfGfn9H6EMphX1f2mRQ3UPAeBocqerbjQKBgQD9qs2g3gjZ6qMTLlKc\nCe2k/bQvNGWgjyDV14DasAKVBSuB4y9UEb3AKZy3e+bBnI00XZvcrGRZ4KoZwuCR\n7LXtGWcNZoEiKTY0hQfxf8eXpizvmYbGE/UdOhoZ2HVN/aSG+zZyEmn28dfOjYAY\nMHPyi3JyLYSEJDRwBd7VFIE0HQKBgQC3r/aEgLctfhMKY3K76m6/Cmm5ufapnneT\n+WrvIZxxhGJVpBtDlZpYXYYI/qEcOVgg7uqMTAhybc8WWA5Jn/gzodNhoaKFATkK\nkJVytBvOIJJFkDWcIaTyRsodTqYWhnHW58+luqxiyjNQXGKBrnLpLRMq0F7hCOCd\n9CWI9U/7xwKBgBW6we6b1opETT/hYfY364GMshixFluQpzFqSoFxPmdhj/6KZY2A\nD48cgW4+UOAY9webVTSsF9STKD8YsIAPlO4AlRFSzJEOkrQhCTMozQIym/rSXfct\n0nt0dLPuFO5fYe6mKl3PMgCTavcoq+ZmkCggxeb9+zIOn+dQuWvrW74JAoGAI/OZ\nwUdcEthZK7BZNXRl5phIJyTBpWMxrlGj31fpwcISaQasm2a9hcwQPtRvfhGvMQrx\n9zGueY8KeCoV6c0YjCqBL9ut7nBV1L6FsaSUyJxRZLIb/AoNuamnR2MsWL5Jq7FF\nT/+gW9mNf44FbbJSJVdAKCIOX+cX53JwokS5OeMCgYBtw750mPavUOBAfmHCSIjw\n1M4uetOJd02Os/RGnrMvhcQMrKkGm+LlVlrwcEquMNs2cVz/zWo+4N510USNyhJ7\nJ+I46ei6hG+leEJpPLvLdbUSEvLsBvFmqu/TUdZ8AlaqpI+aj12InR+DZ1TN59eF\ny57uBflzfW6MZvBW7j5fOA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "googlestorage@spatial-lock-335806.iam.gserviceaccount.com",
+  "client_id": "115205408206441716088",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/googlestorage%40spatial-lock-335806.iam.gserviceaccount.com"
+}
