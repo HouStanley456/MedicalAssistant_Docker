@@ -4,10 +4,13 @@
      Model_SkinPredict : 皮膚模型
      Model_TextPredict : 文字模型
      
-馬達筆記：
+筆記區：
      
+     馬達地端架設
      https://hackmd.io/e4G0PoXoREu9ZG4yTv9xvw?view#%E5%B0%88%E6%A1%88
-
+     楊老闆Uwsgi
+     https://hackmd.io/@T-pTTDjuS7-wiigIYk3eRw/Hkgk7pM6t
+     
 
 部署至Cloud Run：
 
