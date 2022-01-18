@@ -10,8 +10,6 @@ from linebot import  LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from urllib.parse import parse_qsl
 import string
-from model import *
-from textpredict import *
 from visualition import drawpic
 import json
 import mysql.connector
