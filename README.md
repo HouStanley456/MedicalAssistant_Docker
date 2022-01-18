@@ -16,12 +16,14 @@
       step1 使用 ./base 中的Dockerfile
             cd /base
             sudo docker build -t medical_docker .
-            * Dcoekr image  3.31 G
+            
       step2 使用 Image 建立 container 
             sudo docker run -d --rm -p 8888:8888 medical_docker 
+            
       step3 確定 docker container 可以正常運行 Flask
             curl 127.0.0.1:8888/after
             *測試能否連到Flask
+            
       step4 將 Image 部署到 Container Registry
             * https://blog.cloud-ace.tw/application-modernization/serverless/cloud-run-api-server/
             sudo gcloud init
