@@ -34,3 +34,7 @@
             --port 8888 \
             --memory 4Gi \
             --timeout=6m \
+     
+     ＊＊要注意port的問題＊＊
+     
+     
