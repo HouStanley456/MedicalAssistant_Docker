@@ -54,7 +54,7 @@ def testing(input):
                 output = requests.get(vmurl + ":6666/123").text #文字模型測試
                 return ("123" + output)
             if input == "skin":
-                output = requests.get(vmurl + ":7777/images.chinatimes.com/newsphoto/2020-12-11/656/20201211003336.jpg").text
+                output = requests.get(vmurl + ":7777/https://images.chinatimes.com/newsphoto/2021-09-02/1024/20210902003133.jpg").text
                 #圖片模型測試
                 return output
         except error as e:
