@@ -47,7 +47,7 @@ vmurl='http://35.202.193.99'
 
 
 ### if your want testing ####
-@app.route("/<path:input>", methods=["GET"])
+@app.route("/test/<path:input>", methods=["GET"])
 def testing(input):
     if input == "qa" or input != "skin":
         try:
@@ -60,7 +60,7 @@ def testing(input):
                 return output
         except error as e:
             print(e, "模型server的鍋!!")
-            
+
         return input
     else:
         return input
