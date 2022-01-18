@@ -37,7 +37,7 @@ import configparser
 from google.cloud import storage
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 parent_dir =os.path.dirname(os.path.abspath(__file__))
 config = configparser.ConfigParser()
