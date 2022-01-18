@@ -7,3 +7,28 @@
 馬達筆記：
      
      https://hackmd.io/e4G0PoXoREu9ZG4yTv9xvw?view#%E5%B0%88%E6%A1%88
+
+
+部署至Cloud Run：
+
+      建立Docker container and Image
+      
+      step1 使用 ./base 中的Dockerfile
+            cd /base
+            sudo docker build -t medical_docker .
+            * Dcoekr image  3.31 G
+      step2 使用 Image 建立 container 
+            sudo docker run -d --rm -p 8888:8888 medical_docker 
+      step3 確定 docker container 可以正常運行 Flask
+            curl 127.0.0.1:8888/after
+            *測試能否連到Flask
+      step4 將 Image 部署到 Container Registry
+            * https://blog.cloud-ace.tw/application-modernization/serverless/cloud-run-api-server/
+            sudo gcloud init
+            sudo gcloud builds submit --tag gcr.io/{project_id}/{docker_name}
+      step5 部署到 Cloud Run 
+            sudo gcloud run deploy --image gcr.io/{project_id}/{docker_name} \
+            --platform managed \
+            --port 8888 \
+            --memory 4Gi \
+            --timeout=6m \
