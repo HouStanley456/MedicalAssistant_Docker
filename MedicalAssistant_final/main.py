@@ -1,3 +1,5 @@
+#coding=utf-8
+
 from flask import Flask,request, abort, render_template, Response,jsonify
 from flask_cors import CORS, cross_origin
 # app = Flask(__name__)
