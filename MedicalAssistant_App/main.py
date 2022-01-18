@@ -48,7 +48,7 @@ vmurl='http://35.202.193.99'
 ### if your want testing ####
 @app.route("/test/<path:input>", methods=["GET"])
 def testing(input):
-    if input == "qa" or input != "skin":
+    if input == "qa" or input == "skin":
         try:
             if input == "qa":
                 output = requests.get(vmurl + ":6666/123").text #文字模型測試
@@ -141,7 +141,7 @@ def handle_pic(event):
 
         # 傳入資源網址，並預測取得結果
         print('public url', blob.public_url)
-        result = requests.get(vmurl +':7777/'+ blob.public.url.split('//')[1])
+        result = requests.get(vmurl +':7777/'+ blob.public_url.split('//')[1])
         print("預測結果是" + result.text)
 
         line_id = event.source.user_id
