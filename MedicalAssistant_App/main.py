@@ -2,6 +2,7 @@
 
 from flask import Flask,request, abort, render_template, Response,jsonify
 from flask_cors import CORS, cross_origin
+from matplotlib.pyplot import text
 # app = Flask(__name__)
 from addresstoGeocodev2 import *
 from linebot.models import *
@@ -48,16 +49,21 @@ vmurl='http://35.202.193.99'
 ### if your want testing ####
 @app.route("/<path:input>", methods=["GET"])
 def testing(input):
-    if input != None:
-        if input == "qa":
-           output = requests.get(vmurl + ":6666/123") #文字模型測試
-        if input == "skin":
-            output = request.get(vmurl + ":7777/images.chinatimes.com/newsphoto/2020-12-11/656/20201211003336.jpg")
-            #圖片模型測試
-        return output
+    if input == "qa" or input != "skin":
+        try:
+            if input == "qa":
+                output = requests.get(vmurl + ":6666/123").text #文字模型測試
+                return ("123" + output)
+            if input == "skin":
+                output = requests.get(vmurl + ":7777/images.chinatimes.com/newsphoto/2020-12-11/656/20201211003336.jpg").text
+                #圖片模型測試
+                return output
+        except error as e:
+            print(e, "模型server的鍋!!")
+            
+        return input
     else:
-        print("請輸入參數")
-        pass 
+        return input
 
 
 
