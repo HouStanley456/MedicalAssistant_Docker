@@ -1011,14 +1011,14 @@ def createHealtImage(line_id):
     fig.add_trace(
         go.Table(
             header=dict(
-                values=['blood record', 'standard range'],
+                values=['血液常規檢查', '標準範圍'],
                 line_color='#828282',
                 fill_color='white',
                 font=dict(color='#0B1013', size=10),
                 align="center"
             ),
             cells=dict(
-                values=[df['blood record'], df['standrad range']],
+                values=[df['血液常規檢查'], df['標準範圍']],
                 line_color='white',
                 fill=dict(color='white'),
                 font=dict(color='#0B1013', size=10),
