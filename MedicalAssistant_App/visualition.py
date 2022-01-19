@@ -8,11 +8,20 @@ import plotly.express as px
 import pandas as pd
 import pandas as pd
 from sqlalchemy import create_engine
+# from google.cloud import storage
+import os
+import configparser
+
+parent_dir =os.path.dirname(os.path.abspath(__file__))
+config = configparser.ConfigParser()
+config.read(parent_dir + '/config.ini')
+
+engineconf = 'mysql+pymysql://{}:{}@{}:3306/healthrobot'.format(config.get("mysql", "user_name"), config.get("mysql", "pwd"), config.get("mysql", "host"))
 
 def showdata(lineid):
     # 初始化資料庫連線，使用pymysql模組
     # MySQL的使用者：tfi101, 密碼:123456, 埠：3306,資料庫：mydb
-    engine = create_engine('mysql+pymysql://root:123456@52.193.42.101:3306/healthrobot')
+    engine = create_engine(engineconf)
     # 查詢語句，選出employee表中的所有資料
     # lineid = "'ytw00QqxJ3o3KMGUwyE7fF5WFnbxtz4H'" #輸入對向的lineid
     sql = '''
@@ -79,9 +88,46 @@ def drawpic(lineid, messageid):
 
     #輸出圖表
     fig.update_layout(height=400, width=900, title_text="William")    
+
+
+########if you want to use google storage######
+#     # 雲端上傳
+#     YOUR_BUCKET = 'tfi101linebot'
+#     YOUR_PIC = path
+#     BUCKER_URL = 'static/' + image_name + '.png'
+#     print('BUCKER_URL', BUCKER_URL)
+
+#     upload_blob(YOUR_BUCKET, YOUR_PIC, BUCKER_URL)
+
+#     # 添加 GCP 憑證
+#     YOUR_SERVICE = config.get('gcp', 'json_url')
+
+#     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = YOUR_SERVICE
+
+#     #轉存圖表
+#     storage_client = storage.Client()
+#     bucket = storage_client.bucket(YOUR_BUCKET)
+#     blob = bucket.get_blob(BUCKER_URL)
+
+# def upload_blob(bucket_name, source_file_name, destination_blob_name):
+#     """Uploads a file to the bucket."""
+#     # The ID of your GCS bucket
+#     # bucket_name = "your-bucket-name"
+#     # The path to your file to upload
+#     # source_file_name = "local/path/to/file"
+#     # The ID of your GCS object
+#     # destination_blob_name = "storage-object-name"
+
+#     storage_client = storage.Client()
+#     bucket = storage_client.bucket(bucket_name)
+#     blob = bucket.blob(destination_blob_name)
+
+#     blob.upload_from_filename(source_file_name)
+
     #轉成PNG圖檔
     path= './static/'+ messageid +'.png'
-    fig.write_image(path)     
+    fig.write_image(path)   
     return path
+
 
 
