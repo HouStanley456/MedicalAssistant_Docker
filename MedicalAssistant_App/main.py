@@ -224,6 +224,19 @@ def handle_message(event):
         content = get_latitude_longtitude(event.message.latitude, event.message.longitude)
         line_bot_api.reply_message(event.reply_token, FlexSendMessage(alt_text='為您推薦最近的醫院', contents=content))
 
+
+@app.route('/test/<line_id>')
+def drawpic(line_id):
+    createHealtImage(line_id)  ###畫圖
+    path = "./static/" + line_id + ".png"
+    url = ngrokpath + path[1::]
+    print("準備讀取圖片位置:", url)
+    image_message = ImageSendMessage(
+        original_content_url=url,  #### 靜態檔案的url
+        preview_image_url=url)
+    print('ok')
+    return url
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
             print('source handle')
@@ -315,8 +328,8 @@ def handle_message(event):
 
                     hasUse = isExistUser(line_id)
 
-                    if hasUse:
-                        createHealtImage(line_id)
+                    if hasUse: ### liff後
+                        createHealtImage(line_id)  ###畫圖
 
                         path = "./static/" + line_id + ".png"
                         url = ngrokpath + path[1::]
@@ -453,7 +466,7 @@ def getuser():
 @app.route("/getHealth/<line_id>", methods=['GET'])
 def getHealth(line_id):
     newData = []
-    health_list = returnSQL("select recordtime, age, height, weight, bmi, bp_high,bp_low, bs, os from healthinfo where lineid is '%s';" % line_id)
+    health_list = returnSQL("select recordtime, age, height, weight, bmi, bp_high,bp_low, bs, os from healthinfo where lineid =  '%s';" % line_id)
     print('用戶健康資料中', health_list)
 
     for row in health_list:
@@ -469,9 +482,9 @@ def getDetection(line_id):
     classData = []
     skinData = []
     print("接收 用戶的判斷科別和皮膚判別，兩周內，限制兩筆...")
-    class_result = returnSQL("select content, reply, recordtime from chat_log where lineid is '%s' and type = 1 order by recordtime desc limit 1;" % line_id)
+    class_result = returnSQL("select content, reply, recordtime from chat_log where lineid =  '%s' and type = 1 order by recordtime desc limit 1;" % line_id)
 
-    skin_result = returnSQL("select content, reply, recordtime from chat_log where lineid is '%s' and type = 2 order by recordtime desc limit 1;" % line_id)
+    skin_result = returnSQL("select content, reply, recordtime from chat_log where lineid =  '%s' and type = 2 order by recordtime desc limit 1;" % line_id)
 
     for row in class_result:
         classData.append({'content': row[0], 'reply': row[1], 'recordtime': row[2]})
@@ -608,20 +621,13 @@ def returnSQL(sql_text):
                                          password=config.get('mysql', 'pwd')
                                          )
     mycursor = connection.cursor()
-    try:
-        try:
-            mycursor.execute(sql_text)
-        except:
-            exception_type, exception, exc_tb = sys.exc_info()
-            print("執行sql出錯啦!!", exception)
-            return None
-
-        result = mycursor.fetchall()
-        return result
-    finally:
-        mycursor.close()
-        connection.close()
-
+    mycursor.execute(sql_text)
+    result = mycursor.fetchall()
+    print(result)
+    mycursor.close()
+    connection.close()
+    return result
+ 
 def getUserName(line_id):
     """
     取得用戶的姓名
@@ -832,32 +838,32 @@ def createHealtImage(line_id):
     print('開始繪製健康報告')
     height = getLastHeight(line_id)
     height = float(height[0][0])
-
+    print('10%..')
     weight = getLastWeight(line_id)
     weight = float(weight[0][0])
-
+    print('20%..')
     bmi = getBMI(weight, height)
     # print('bmi', bmi)
-
+    print('30%..')
     view_pl_list = []
     pl_list = getPL(line_id)
     # print('pl_list', pl_list)
-
+    print('40%..')
     view_ph_list = []
     ph_list = getPH(line_id)
     # print('ph_list', ph_list)
-
+    print('50%..')
     view_bo_list = []
     bo_list = getBO(line_id)
     # print('bo_list', bo_list)
-
+    print('60%..')
     view_bs_list = []
     bs_list = getBS(line_id)
     # print('bs_list', bs_list)
-
+    print('70%..')
     print('get user name', getUserName(line_id))
     userName = getUserName(line_id)[0][0]
-
+    print('80%..')
     # skin = getLastOneSkin(line_id)[0]
     # view_skin = [skin[2].strftime("%Y-%m-%d"), skin[1], skin[0]]
     # # print('skin', skin)
@@ -866,13 +872,14 @@ def createHealtImage(line_id):
     # view_class = [text_class[2].strftime("%Y-%m-%d"), text_class[1], text_class[0]]
     # # print('text_class', text_class)
 
-    # 生成 14 天日期列表
+    print (" 生成 14 天日期列表 ")
+
     datelist = []
     date_count = 13
     while (date_count >= 0):
         datelist.append(datetime.today().date() - timedelta(days=date_count))
         date_count -= 1
-
+    print('90%..')
     view_pl_list = getViewHealthList(pl_list, datelist)
     print("1")
     view_ph_list = getViewHealthList(ph_list, datelist)
@@ -881,7 +888,7 @@ def createHealtImage(line_id):
     print("3")
     view_bo_list = getViewHealthList(bo_list, datelist)
 
-    print('製作圖表')
+    print('製作圖表 frame')
     fig = make_subplots(
         rows=3, cols=1,
         specs=[[{"type": "table"}],
@@ -890,7 +897,8 @@ def createHealtImage(line_id):
         row_heights=[3, 3, 4]
         #     column_widths=[0.4, 0.5],
     )
-    print("設定病人資訊")
+    print("繪製完成")
+    print("病人資訊清洗中...")
     # --病人資訊--
     bmi = getBMI(weight, height)
     well_weight = 62 + (173 - 170) * 0.6
@@ -903,7 +911,7 @@ def createHealtImage(line_id):
     else:
         BMIcolor = '#0B1013'
 
-    print("go.table")
+    print("plotly設定一張table")
     fig.add_trace(go.Table(
         header=dict(
             values=['紀錄日期', '姓名', '性別', '身高', '體重', '理想體重', 'BMI'],
@@ -1022,7 +1030,10 @@ def createHealtImage(line_id):
     fig.update_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
 
     print('匯出圖片 生理資訊 開始')
-    fig.write_image('./static/Patient_Base.png', scale=3)
+    img_bytes = fig.to_image(format='png')
+    with open("./static/Patient_Base.png", 'wb' ) as  f:
+        f.write(img_bytes)
+
     print('匯出圖片 生理資訊 結束')
     # fig.show()
     # --------------------------------------------------------------------------------------------------------------#
@@ -1101,16 +1112,19 @@ def createHealtImage(line_id):
     figB.update_layout(height=700, width=600, showlegend=False, template='simple_white')
     # figB.show()
     print('血液圖片匯出 開始')
-    figB.write_image('./static/Patient_BPBU.png', scale=3)
+    img_bytes = figB.to_image(format='png')
+    with open("./static/Patient_BPBU.png", 'wb' ) as  f:
+        f.write(img_bytes)
+    
     print('血液圖片匯出 結束')
 
     img1 = Image.open("./static/Patient_Base.png")
     # img1 = img1.crop((10, 10, 650, 155))   #img1 裁切
     img2 = Image.open("./static/Patient_BPBU.png")
 
-    result = Image.new(img1.mode, (1800, 4200))
+    result = Image.new(img1.mode, (600, 1400))
     result.paste(img1, box=(0, 0))
-    result.paste(img2, box=(0, 1900))
+    result.paste(img2, box=(0, 633))
     result.save(f"./static/{line_id}.png")
     result.save("./static/Patient01_dashboard_1.png")
     result.thumbnail((180, 350))
