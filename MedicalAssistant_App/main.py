@@ -29,7 +29,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import init_notebook_mode, plot_mpl
 import plotly.express as px
-import pandas as pd
+import pandas as 
 from PIL import Image
 
 import configparser
@@ -587,7 +587,7 @@ def excuteSQL(sql_text):
     connection = mysql.connector.connect(host=config.get('mysql', 'host'),
                                          database='healthrobot',
                                          user=config.get('mysql', 'user_name'),
-                                         password=config.get('mysql', 'pd')
+                                         password=config.get('mysql', 'pwd')
                                          )
     mycursor = connection.cursor()
     mycursor.execute(sql_text)
@@ -605,7 +605,7 @@ def returnSQL(sql_text):
     connection = mysql.connector.connect(host=config.get('mysql', 'host'),
                                          database='healthrobot',
                                          user=config.get('mysql', 'user_name'),
-                                         password=config.get('mysql', 'pd')
+                                         password=config.get('mysql', 'pwd')
                                          )
     mycursor = connection.cursor()
     try:
@@ -989,11 +989,11 @@ def createHealtImage(line_id):
             row=2, col=1
         )
 
-        # fig.update_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
+        # fig.uate_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
         # --------------------------------------------------------------------------------------------------------------#
 
         # --血液標準--
-        df = pd.read_csv("./血液檢查標準.csv")
+        df = .read_csv("./血液檢查標準.csv")
 
         fig.add_trace(
             go.Table(
@@ -1014,7 +1014,7 @@ def createHealtImage(line_id):
             row=3, col=1
         )
 
-        fig.update_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
+        fig.uate_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
 
         print('匯出圖片 生理資訊 開始')
         fig.write_image('.\\static\\Patient_Base.png', scale=3)
@@ -1093,7 +1093,7 @@ def createHealtImage(line_id):
         figB.add_hline(y=100, line_color='red', row=3, col=1)
         figB.add_hrect(y0=100, y1=y_maxbu, line_width=0, fillcolor="red", opacity=0.1, row=3, col=1)
 
-        figB.update_layout(height=700, width=600, showlegend=False, template='simple_white')
+        figB.uate_layout(height=700, width=600, showlegend=False, template='simple_white')
         # figB.show()
         print('血液圖片匯出 開始')
         figB.write_image('.\\static\\Patient_BPBU.png', scale=3)
