@@ -453,7 +453,7 @@ def getuser():
 @app.route("/getHealth/<line_id>", methods=['GET'])
 def getHealth(line_id):
     newData = []
-    health_list = returnSQL("select recordtime, age, height, weight, bmi, bp_high,bp_low, bs, os from healthinfo where lineid = '%s';" % line_id)
+    health_list = returnSQL("select recordtime, age, height, weight, bmi, bp_high,bp_low, bs, os from healthinfo where lineid is '%s';" % line_id)
     print('用戶健康資料中', health_list)
 
     for row in health_list:
@@ -707,7 +707,7 @@ def getLastTwoSentence(line_id):
     取得用戶的最後兩個句子
     :return: 最後兩個句子
     """
-    exist_result = returnSQL("select content from chat_log where lineid = '%s' order by recordtime desc limit 2;" % line_id)
+    exist_result = returnSQL("select content from chat_log where lineid is '%s' order by recordtime desc limit 2;" % line_id)
     return exist_result
 
 def setChatSQL(line_id, messageid, type, content, reply):
