@@ -29,7 +29,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 from plotly.offline import init_notebook_mode, plot_mpl
 import plotly.express as px
-import pandas as 
+import pandas as pd
 from PIL import Image
 
 import configparser
@@ -993,7 +993,7 @@ def createHealtImage(line_id):
         # --------------------------------------------------------------------------------------------------------------#
 
         # --血液標準--
-        df = .read_csv("./血液檢查標準.csv")
+        df = pd.read_csv("./血液檢查標準.csv")
 
         fig.add_trace(
             go.Table(
