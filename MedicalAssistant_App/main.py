@@ -295,11 +295,11 @@ def handle_message(event):
                     tiny_path = "./photo/" + line_id + "_tiny.png"
                     tiny_url = ngrokpath + tiny_path[1::]
 
-                    print(url)
+                    # print(url)
                     image_message = ImageSendMessage(
                         original_content_url=url,  #### 靜態檔案的url
                         preview_image_url=tiny_url)
-                    print(image_message)
+                    # print(image_message)
                     line_bot_api.reply_message(event.reply_token, [TextSendMessage(
                         text=replyText), image_message])
 
@@ -804,11 +804,11 @@ def getViewHealthList(source_list, date_range):
         filter_list = []
         print(date)
         for health in source_list:
-            print('pl date', health[1].date())
-            print('compare', health[1].date() == date)
+            # print('pl date', health[1].date())
+            # print('compare', health[1].date() == date)
             if health[1].date() == date:
-                print('get value', health[0])
-                print('get value', float(health[0]))
+                # print('get value', health[0])
+                # print('get value', float(health[0]))
                 filter_list.append((health[0]))
 
         print('filter list', filter_list)
@@ -967,7 +967,8 @@ def createHealtImage(line_id):
             Plateletcolor = 'red'
         else:
             Plateletcolor = '#0B1013'
-
+        
+        print("開始建立圖表...")
         # 建立圖表
         fig.add_trace(
             go.Table(
@@ -988,11 +989,13 @@ def createHealtImage(line_id):
             ),
             row=2, col=1
         )
+        print("建立圖表完成")
 
         # fig.uate_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
         # --------------------------------------------------------------------------------------------------------------#
 
         # --血液標準--
+        print("讀取血液報告")
         df = pd.read_csv("./血液檢查標準.csv")
 
         fig.add_trace(
@@ -1017,7 +1020,7 @@ def createHealtImage(line_id):
         fig.uate_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
 
         print('匯出圖片 生理資訊 開始')
-        fig.write_image('.\\static\\Patient_Base.png', scale=3)
+        fig.write_image('./static/Patient_Base.png', scale=3)
         print('匯出圖片 生理資訊 結束')
         # fig.show()
         # --------------------------------------------------------------------------------------------------------------#
@@ -1096,7 +1099,7 @@ def createHealtImage(line_id):
         figB.uate_layout(height=700, width=600, showlegend=False, template='simple_white')
         # figB.show()
         print('血液圖片匯出 開始')
-        figB.write_image('.\\static\\Patient_BPBU.png', scale=3)
+        figB.write_image('./static/Patient_BPBU.png', scale=3)
         print('血液圖片匯出 結束')
 
         img1 = Image.open("./static/Patient_Base.png")
@@ -1122,7 +1125,7 @@ def createHealtImage(line_id):
 
     except:
         exception_type, exception, exc_tb = sys.exc_info()
-        print(exception)
+        print("sql畫圖錯誤", exception)
 
 
 # def manageForm(event, mtext):
