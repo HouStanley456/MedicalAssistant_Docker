@@ -319,11 +319,11 @@ def handle_message(event):
 
                         path = "./static/" + line_id + ".png"
                         url = ngrokpath + path[1::]
-                        print(url)
+                        print("準備讀取圖片位置:", url)
                         image_message = ImageSendMessage(
                             original_content_url=url,  #### 靜態檔案的url
                             preview_image_url=url)
-                        print(image_message)
+                        # print(image_message)
                         line_bot_api.reply_message(event.reply_token, image_message)
                     else:
                         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="啟用生理資訊紀錄，歡迎加入我們！"))
@@ -401,7 +401,7 @@ def handle_message(event):
 
                 line_id = event.source.user_id
                 lastTwoSentence = getLastTwoSentence(line_id)
-                print(lastTwoSentence)
+                print("兩點間距離:", lastTwoSentence)
 
                 if (len(lastTwoSentence) == 1):
                     is_last_one_bert = lastTwoSentence[0][0] == '我想進一步了解我的症狀'
@@ -452,9 +452,8 @@ def getuser():
 @app.route("/getHealth/<line_id>", methods=['GET'])
 def getHealth(line_id):
     newData = []
-
     health_list = returnSQL("select recordtime, age, height, weight, bmi, bp_high,bp_low, bs, os from healthinfo where lineid = '%s';" % line_id)
-    print('health list', health_list)
+    print('用戶健康資料中', health_list)
 
     for row in health_list:
         newData.append({'recordtime': row[0], 'age': row[1], 'height': float(row[2]), 'weight': float(row[3]), 'bmi': float(row[4]), 'bp_high': float(row[5]), 'bp_low': float(row[6]), 'bs': float(row[7]), 'bo': float(row[8])})
@@ -499,7 +498,7 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_filename(source_file_name)
 
-    print(
+    print("google上傳圖片"+
         "File {} uploaded to {}.".format(
             source_file_name, destination_blob_name
         )
@@ -508,7 +507,7 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 def createHealthInfo(line_id):
     date_count = 13
     while (date_count >= 0):
-        print('生成開始')
+        print('生成healthinfo開始')
         record_date = datetime.today().date() - timedelta(days=date_count)
         date_count -= 1
 
@@ -521,7 +520,7 @@ def createHealthInfo(line_id):
         BS = round(random.uniform(60.0, 100.0), 1)
         OS = (round(random.uniform(94.0, 97.0), 1)) + round(random.normalvariate(0, 2), 1)
         setHealthSQLWithTime(line_id, watchid, Height, Weight, BP_high, BP_low, OS, BS, record_date)
-        print('生成結束')
+        print('生成healthifo結束')
 
 # def createinfo(lineid, messageid, i):
 #     """確認db, 並創建100筆資料, 需輸入lineid, messageid, i=次數"""
@@ -601,7 +600,7 @@ def returnSQL(sql_text):
     :param sql_text: 主要為 讀取
     :return: 回傳值
     """
-    print('return sql text', sql_text)
+    print('執行妳的sql:', sql_text)
     connection = mysql.connector.connect(host=config.get('mysql', 'host'),
                                          database='healthrobot',
                                          user=config.get('mysql', 'user_name'),
@@ -613,7 +612,7 @@ def returnSQL(sql_text):
             mycursor.execute(sql_text)
         except:
             exception_type, exception, exc_tb = sys.exc_info()
-            print(exception)
+            print("執行sql出錯啦!!", exception)
             return None
 
         result = mycursor.fetchall()
@@ -799,7 +798,7 @@ def setHealthSQLWithTime(line_id, message_id, height, weight, press_h, press_l, 
 
 def getViewHealthList(source_list, date_range):
     view_list = []
-
+    print("建立健康視表..")
     for date in date_range:
         filter_list = []
         print(date)
@@ -811,7 +810,7 @@ def getViewHealthList(source_list, date_range):
                 # print('get value', float(health[0]))
                 filter_list.append((health[0]))
 
-        print('filter list', filter_list)
+        # print('filter list', filter_list)
 
         if len(filter_list) != 0:
             total = 0
@@ -824,8 +823,8 @@ def getViewHealthList(source_list, date_range):
         else:
             view_list.append(0)
 
-        print('view_list', view_list)
-
+        # print('view_list', view_list)
+    ("建構健康視表完成!")
     return view_list
 
 def createHealtImage(line_id):
