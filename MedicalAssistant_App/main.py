@@ -914,7 +914,7 @@ def createHealtImage(line_id):
     print("plotly設定一張table")
     fig.add_trace(go.Table(
         header=dict(
-            values=['紀錄日期', '姓名', '性別', '身高', '體重', '理想體重', 'BMI'],
+            values=['recordtime', 'name', 'sex', 'high', 'weight', 'target', 'BMI'],
             line_color='white',
             fill_color='#FAECCD',
             font=dict(color='#0B1013', size=10),
@@ -983,7 +983,7 @@ def createHealtImage(line_id):
     fig.add_trace(
         go.Table(
             header=dict(
-                values=['白血球', '紅血球', '血紅素', '血球容積比', '平均紅血球容積', '血小板數目'],
+                values=['Wbc', 'Rbc', 'Hgb', 'Hct', 'MCV', 'Platelet'],
                 line_color='white',
                 fill_color='#FEDFE1',
                 font=dict(color='#0B1013', size=10),
@@ -1011,14 +1011,14 @@ def createHealtImage(line_id):
     fig.add_trace(
         go.Table(
             header=dict(
-                values=['血液常規檢查', '標準範圍'],
+                values=['blood record', 'standard range'],
                 line_color='#828282',
                 fill_color='white',
                 font=dict(color='#0B1013', size=10),
                 align="center"
             ),
             cells=dict(
-                values=[df['血液常規檢查'], df['標準範圍']],
+                values=[df['blood record'], df['standrad range']],
                 line_color='white',
                 fill=dict(color='white'),
                 font=dict(color='#0B1013', size=10),
@@ -1072,7 +1072,7 @@ def createHealtImage(line_id):
         #            [{"type": "table"}],],
         row_heights=[3, 3, 3],
         #     column_widths=[0.4, 0.5],
-        subplot_titles=("收縮壓", "舒張壓", "血糖"))
+        subplot_titles=("SBP", "DBP", "Blood Glucose level"))
 
     # BP收縮壓
     figB.add_trace(go.Scatter(x=datelist,
@@ -1080,7 +1080,7 @@ def createHealtImage(line_id):
                                 mode='lines+markers',
                                 # marker=dict(color= '#FEDFE1'),
                                 # line=dict(color='#A2DB84', width=3),
-                                name='收縮壓'),
+                                name='SBP'),
                     row=1, col=1)
     figB.add_hline(y=100, line_color='red', row=1, col=1)
     figB.add_hline(y=140, line_color='red', row=1, col=1)
@@ -1093,7 +1093,7 @@ def createHealtImage(line_id):
                                 mode='lines+markers',
                                 # marker=dict(color= '#E9CD4C'),
                                 # line=dict(color='#E9CD4C', width=3),
-                                name='舒張壓'),
+                                name='DBP'),
                     row=2, col=1)
     figB.add_hline(y=90, line_color='red', row=2, col=1)
     figB.add_hrect(y0=90, y1=y_maxlow, line_width=0, fillcolor="red", opacity=0.1, row=2, col=1)
@@ -1104,7 +1104,7 @@ def createHealtImage(line_id):
                                 mode='lines+markers',
                                 # marker=dict(color= [BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor]),
                                 # line=dict(color='#B5CAA0', width=3),
-                                name='血糖'),
+                                name='Blood Glucose level'),
                     row=3, col=1)
     figB.add_hline(y=100, line_color='red', row=3, col=1)
     figB.add_hrect(y0=100, y1=y_maxbu, line_width=0, fillcolor="red", opacity=0.1, row=3, col=1)
