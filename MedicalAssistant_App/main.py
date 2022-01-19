@@ -1019,7 +1019,7 @@ def createHealtImage(line_id):
         row=3, col=1
     )
 
-    fig.uate_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
+    fig.update_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
 
     print('匯出圖片 生理資訊 開始')
     fig.write_image('./static/Patient_Base.png', scale=3)
