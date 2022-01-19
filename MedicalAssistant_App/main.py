@@ -993,7 +993,7 @@ def createHealtImage(line_id):
     )
     print("建立圖表完成")
 
-    # fig.uate_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
+    # fig.update_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
     # --------------------------------------------------------------------------------------------------------------#
 
     # --血液標準--
@@ -1098,7 +1098,7 @@ def createHealtImage(line_id):
     figB.add_hline(y=100, line_color='red', row=3, col=1)
     figB.add_hrect(y0=100, y1=y_maxbu, line_width=0, fillcolor="red", opacity=0.1, row=3, col=1)
 
-    figB.uate_layout(height=700, width=600, showlegend=False, template='simple_white')
+    figB.update_layout(height=700, width=600, showlegend=False, template='simple_white')
     # figB.show()
     print('血液圖片匯出 開始')
     figB.write_image('./static/Patient_BPBU.png', scale=3)
