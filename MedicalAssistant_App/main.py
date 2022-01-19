@@ -824,7 +824,7 @@ def getViewHealthList(source_list, date_range):
             view_list.append(0)
 
         # print('view_list', view_list)
-    ("建構健康視表完成!")
+    print("建構健康視表完成!以下是這個表:", view_list)
     return view_list
 
 def createHealtImage(line_id):
