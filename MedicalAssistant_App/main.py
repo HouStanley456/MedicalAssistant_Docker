@@ -881,7 +881,7 @@ def createHealtImage(line_id):
     print("3")
     view_bo_list = getViewHealthList(bo_list, datelist)
 
-    print('病人基本資訊開始')
+    print('製作圖表')
     fig = make_subplots(
         rows=3, cols=1,
         specs=[[{"type": "table"}],
@@ -890,7 +890,7 @@ def createHealtImage(line_id):
         row_heights=[3, 3, 4]
         #     column_widths=[0.4, 0.5],
     )
-
+    print("設定病人資訊")
     # --病人資訊--
     bmi = getBMI(weight, height)
     well_weight = 62 + (173 - 170) * 0.6
@@ -903,6 +903,7 @@ def createHealtImage(line_id):
     else:
         BMIcolor = '#0B1013'
 
+    print("go.table")
     fig.add_trace(go.Table(
         header=dict(
             values=['紀錄日期', '姓名', '性別', '身高', '體重', '理想體重', 'BMI'],
