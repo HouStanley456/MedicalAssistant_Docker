@@ -627,7 +627,7 @@ def getUserName(line_id):
     取得用戶的姓名
     :return: 姓名
     """
-    exist_result = returnSQL("select twname from user where lineid is '%s';" % line_id)
+    exist_result = returnSQL("select twname from user where lineid = '%s';" % line_id)
     return exist_result
 
 def getPH(line_id):
@@ -635,7 +635,7 @@ def getPH(line_id):
     取得用戶的最後14天的血壓(高的)
     :return: 最後14天的血壓(高的)
     """
-    exist_result = returnSQL("select bp_high, recordtime from healthinfo where lineid is '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
+    exist_result = returnSQL("select bp_high, recordtime from healthinfo where lineid = '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
     return exist_result
 
 def getPL(line_id):
@@ -643,7 +643,7 @@ def getPL(line_id):
     取得用戶的最後14天的血壓(低的)
     :return: 最後14天的血壓(低的)
     """
-    exist_result = returnSQL("select bp_low, recordtime from healthinfo where lineid is '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
+    exist_result = returnSQL("select bp_low, recordtime from healthinfo where lineid = '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
     return exist_result
 
 def getBO(line_id):
@@ -651,7 +651,7 @@ def getBO(line_id):
     取得用戶的最後14天的血氧
     :return: 最後14天的血氧
     """
-    exist_result = returnSQL("select os, recordtime from healthinfo where lineid is '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
+    exist_result = returnSQL("select os, recordtime from healthinfo where lineid = '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
     return exist_result
 
 def getBS(line_id):
@@ -659,7 +659,7 @@ def getBS(line_id):
     取得用戶的最後14天的血糖
     :return: 最後14天的血糖
     """
-    exist_result = returnSQL("select bs, recordtime from healthinfo where lineid is '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
+    exist_result = returnSQL("select bs, recordtime from healthinfo where lineid = '%s' and recordtime between DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND NOW() order by recordtime desc;" % line_id)
     return exist_result
 
 def getLastWeight(line_id):
@@ -667,7 +667,7 @@ def getLastWeight(line_id):
     取得用戶的最後體重
     :return: 最後體重
     """
-    exist_result = returnSQL("select weight from healthinfo where lineid is '%s' order by recordtime desc limit 1;" % line_id)
+    exist_result = returnSQL("select weight from healthinfo where lineid = '%s' order by recordtime desc limit 1;" % line_id)
     return exist_result
 
 def getLastHeight(line_id):
@@ -675,7 +675,7 @@ def getLastHeight(line_id):
     取得用戶的最後身高
     :return: 最後身高
     """
-    exist_result = returnSQL("select height from healthinfo where lineid is '%s' order by recordtime desc limit 1;" % line_id)
+    exist_result = returnSQL("select height from healthinfo where lineid = '%s' order by recordtime desc limit 1;" % line_id)
     return exist_result
 
 def getLastOneSkin(line_id):
@@ -683,7 +683,7 @@ def getLastOneSkin(line_id):
     取得用戶的最後兩個皮膚測量結果
     :return: 最後兩個皮膚測量結果
     """
-    exist_result = returnSQL("select content, reply, recordtime from chat_log where lineid is '%s' and type = 2 order by recordtime desc limit 1;" % line_id)
+    exist_result = returnSQL("select content, reply, recordtime from chat_log where lineid = '%s' and type = 2 order by recordtime desc limit 1;" % line_id)
     return exist_result
 
 def getLastOneClass(line_id):
@@ -691,7 +691,7 @@ def getLastOneClass(line_id):
     取得用戶的最後兩個診斷科別
     :return: 最後兩個診斷科別結果
     """
-    exist_result = returnSQL("select content, reply, recordtime from chat_log where lineid is '%s' and type = 1 order by recordtime desc limit 1;" % line_id)
+    exist_result = returnSQL("select content, reply, recordtime from chat_log where lineid = '%s' and type = 1 order by recordtime desc limit 1;" % line_id)
     return exist_result
 
 def getLastClassName(line_id):
@@ -699,7 +699,7 @@ def getLastClassName(line_id):
     取得用戶上一筆判別科別
     :return: 單筆科別資料
     """
-    exist_result = returnSQL("select reply from chat_log where lineid is '%s' order by recordtime desc limit 1;" % line_id)
+    exist_result = returnSQL("select reply from chat_log where lineid = '%s' order by recordtime desc limit 1;" % line_id)
     return exist_result
 
 def getLastTwoSentence(line_id):
@@ -707,7 +707,7 @@ def getLastTwoSentence(line_id):
     取得用戶的最後兩個句子
     :return: 最後兩個句子
     """
-    exist_result = returnSQL("select content from chat_log where lineid is '%s' order by recordtime desc limit 2;" % line_id)
+    exist_result = returnSQL("select content from chat_log where lineid = '%s' order by recordtime desc limit 2;" % line_id)
     return exist_result
 
 def setChatSQL(line_id, messageid, type, content, reply):
@@ -749,7 +749,7 @@ def isExistUser(line_id):
     :return: True/False
     """
     try:
-        exist_result = returnSQL("select birthdate from user where lineid is '%s';" % line_id)
+        exist_result = returnSQL("select birthdate from user where lineid = '%s';" % line_id)
         print('exist result', exist_result)
     except:
         exception_type, exception, exc_tb = sys.exc_info()
@@ -767,7 +767,7 @@ def setHealthSQL(line_id, message_id, height, weight, press_h, press_l, bo, bs):
         bmi = getBMI(weight, height)
         print('bmi', bmi)
 
-        birthdate_result = returnSQL("select birthdate from user where lineid is '%s';" % line_id)
+        birthdate_result = returnSQL("select birthdate from user where lineid = '%s';" % line_id)
 
         today = datetime.today()
         age = int(today.year) - int(birthdate_result[0][0].year)
@@ -786,7 +786,7 @@ def setHealthSQLWithTime(line_id, message_id, height, weight, press_h, press_l, 
     bmi = getBMI(weight, height)
     print('bmi', bmi)
 
-    birthdate_result = returnSQL("select birthdate from user where lineid is '%s';" % line_id)
+    birthdate_result = returnSQL("select birthdate from user where lineid = '%s';" % line_id)
 
     today = datetime.today()
     age = int(today.year) - int(birthdate_result[0][0].year)
