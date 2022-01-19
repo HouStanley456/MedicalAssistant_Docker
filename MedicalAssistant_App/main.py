@@ -468,7 +468,7 @@ def getDetection(line_id):
 
     classData = []
     skinData = []
-
+    print("接收 用戶的判斷科別和皮膚判別，兩周內，限制兩筆...")
     class_result = returnSQL("select content, reply, recordtime from chat_log where lineid = '%s' and type = 1 order by recordtime desc limit 1;" % line_id)
 
     skin_result = returnSQL("select content, reply, recordtime from chat_log where lineid = '%s' and type = 2 order by recordtime desc limit 1;" % line_id)
@@ -480,10 +480,10 @@ def getDetection(line_id):
         skinData.append({'content': row[0], 'reply': row[1], 'recordtime': row[2]})
 
     class_skin_data = {'class': classData, 'skin': skinData}
-
+    print("完成!")
     return jsonify(class_skin_data)
 
-
+    
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     # The ID of your GCS bucket
@@ -874,258 +874,254 @@ def createHealtImage(line_id):
         date_count -= 1
 
     view_pl_list = getViewHealthList(pl_list, datelist)
+    print("1")
     view_ph_list = getViewHealthList(ph_list, datelist)
+    print("2")
     view_bs_list = getViewHealthList(bs_list, datelist)
+    print("3")
     view_bo_list = getViewHealthList(bo_list, datelist)
 
+    print('病人基本資訊開始')
+    fig = make_subplots(
+        rows=3, cols=1,
+        specs=[[{"type": "table"}],
+                [{"type": "table"}],
+                [{"type": "table"}], ],
+        row_heights=[3, 3, 4]
+        #     column_widths=[0.4, 0.5],
+    )
 
-    try:
-        print('病人基本資訊開始')
-        fig = make_subplots(
-            rows=3, cols=1,
-            specs=[[{"type": "table"}],
-                   [{"type": "table"}],
-                   [{"type": "table"}], ],
-            row_heights=[3, 3, 4]
-            #     column_widths=[0.4, 0.5],
-        )
+    # --病人資訊--
+    bmi = getBMI(weight, height)
+    well_weight = 62 + (173 - 170) * 0.6
+    normal_info = [datetime.today().date(), userName, '-', height, weight, well_weight, bmi]
 
-        # --病人資訊--
-        bmi = getBMI(weight, height)
-        well_weight = 62 + (173 - 170) * 0.6
-        normal_info = [datetime.today().date(), userName, '-', height, weight, well_weight, bmi]
+    # 判斷紅字
+    bmi = float(bmi)
+    if (bmi < 18.5) or (bmi >= 24):
+        BMIcolor = 'red'
+    else:
+        BMIcolor = '#0B1013'
 
-        # 判斷紅字
-        bmi = float(bmi)
-        if (bmi < 18.5) or (bmi >= 24):
-            BMIcolor = 'red'
-        else:
-            BMIcolor = '#0B1013'
+    fig.add_trace(go.Table(
+        header=dict(
+            values=['紀錄日期', '姓名', '性別', '身高', '體重', '理想體重', 'BMI'],
+            line_color='white',
+            fill_color='#FAECCD',
+            font=dict(color='#0B1013', size=10),
+            align="center"
+        ),
+        cells=dict(
+            values=normal_info,
+            line_color='white',
+            fill=dict(color='white'),
+            font=dict(color=['#0B1013', '#0B1013', '#0B1013', '#0B1013', '#0B1013', '#0B1013', BMIcolor], size=10),
+            align="center")
+    ),
+        row=1, col=1
+    )
 
-        fig.add_trace(go.Table(
+    # --------------------------------------------------------------------------------------------------------------#
+    # --病人血液資訊--
+    print('病人血液資訊開始')
+
+    白血球WBC = 6.6
+    紅血球RBC = 5.53
+    血紅素Hgb = 16.3
+    血球容積比Hct = 49.8
+    平均紅血球容積MCV = 89.9
+    血小板數目Platelet = 246
+
+    # 判斷紅字
+    WBC = float(白血球WBC)
+    if (WBC < 4) or (WBC > 11):
+        WBCcolor = 'red'
+    else:
+        WBCcolor = '#0B1013'
+
+    RBC = float(紅血球RBC)
+    if (RBC < 4.5) or (RBC > 6.1):
+        RBCcolor = 'red'
+    else:
+        RBCcolor = '#0B1013'
+
+    Hgb = float(血紅素Hgb)
+    if (Hgb < 13.8) or (Hgb > 18.0):
+        Hgbcolor = 'red'
+    else:
+        Hgbcolor = '#0B1013'
+
+    Hct = float(血球容積比Hct)
+    if (Hct < 38) or (Hct > 52):
+        Hctcolor = 'red'
+    else:
+        Hctcolor = '#0B1013'
+
+    MCV = float(平均紅血球容積MCV)
+    if (MCV < 78) or (MCV > 100):
+        MCVcolor = 'red'
+    else:
+        MCVcolor = '#0B1013'
+
+    Platelet = float(血小板數目Platelet)
+    if (Platelet < 150) or (Platelet > 400):
+        Plateletcolor = 'red'
+    else:
+        Plateletcolor = '#0B1013'
+    
+    print("開始建立圖表...")
+    # 建立圖表
+    fig.add_trace(
+        go.Table(
             header=dict(
-                values=['紀錄日期', '姓名', '性別', '身高', '體重', '理想體重', 'BMI'],
+                values=['白血球', '紅血球', '血紅素', '血球容積比', '平均紅血球容積', '血小板數目'],
                 line_color='white',
-                fill_color='#FAECCD',
+                fill_color='#FEDFE1',
                 font=dict(color='#0B1013', size=10),
                 align="center"
             ),
             cells=dict(
-                values=normal_info,
+                values=[白血球WBC, 紅血球RBC, 血紅素Hgb, 血球容積比Hct, 平均紅血球容積MCV, 血小板數目Platelet],
                 line_color='white',
                 fill=dict(color='white'),
-                font=dict(color=['#0B1013', '#0B1013', '#0B1013', '#0B1013', '#0B1013', '#0B1013', BMIcolor], size=10),
+                font=dict(color=['#0B1013', WBCcolor, RBCcolor, Hgbcolor, Hctcolor, MCVcolor, Plateletcolor],
+                            size=10),
                 align="center")
         ),
-            row=1, col=1
-        )
+        row=2, col=1
+    )
+    print("建立圖表完成")
 
-        # --------------------------------------------------------------------------------------------------------------#
-        # --病人血液資訊--
-        print('病人血液資訊開始')
+    # fig.uate_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
+    # --------------------------------------------------------------------------------------------------------------#
 
-        白血球WBC = 6.6
-        紅血球RBC = 5.53
-        血紅素Hgb = 16.3
-        血球容積比Hct = 49.8
-        平均紅血球容積MCV = 89.9
-        血小板數目Platelet = 246
+    # --血液標準--
+    print("讀取血液報告")
+    df = pd.read_csv("./血液檢查標準.csv")
 
-        # 判斷紅字
-        WBC = float(白血球WBC)
-        if (WBC < 4) or (WBC > 11):
-            WBCcolor = 'red'
-        else:
-            WBCcolor = '#0B1013'
-
-        RBC = float(紅血球RBC)
-        if (RBC < 4.5) or (RBC > 6.1):
-            RBCcolor = 'red'
-        else:
-            RBCcolor = '#0B1013'
-
-        Hgb = float(血紅素Hgb)
-        if (Hgb < 13.8) or (Hgb > 18.0):
-            Hgbcolor = 'red'
-        else:
-            Hgbcolor = '#0B1013'
-
-        Hct = float(血球容積比Hct)
-        if (Hct < 38) or (Hct > 52):
-            Hctcolor = 'red'
-        else:
-            Hctcolor = '#0B1013'
-
-        MCV = float(平均紅血球容積MCV)
-        if (MCV < 78) or (MCV > 100):
-            MCVcolor = 'red'
-        else:
-            MCVcolor = '#0B1013'
-
-        Platelet = float(血小板數目Platelet)
-        if (Platelet < 150) or (Platelet > 400):
-            Plateletcolor = 'red'
-        else:
-            Plateletcolor = '#0B1013'
-        
-        print("開始建立圖表...")
-        # 建立圖表
-        fig.add_trace(
-            go.Table(
-                header=dict(
-                    values=['白血球', '紅血球', '血紅素', '血球容積比', '平均紅血球容積', '血小板數目'],
-                    line_color='white',
-                    fill_color='#FEDFE1',
-                    font=dict(color='#0B1013', size=10),
-                    align="center"
-                ),
-                cells=dict(
-                    values=[白血球WBC, 紅血球RBC, 血紅素Hgb, 血球容積比Hct, 平均紅血球容積MCV, 血小板數目Platelet],
-                    line_color='white',
-                    fill=dict(color='white'),
-                    font=dict(color=['#0B1013', WBCcolor, RBCcolor, Hgbcolor, Hctcolor, MCVcolor, Plateletcolor],
-                              size=10),
-                    align="center")
+    fig.add_trace(
+        go.Table(
+            header=dict(
+                values=['血液常規檢查', '標準範圍'],
+                line_color='#828282',
+                fill_color='white',
+                font=dict(color='#0B1013', size=10),
+                align="center"
             ),
-            row=2, col=1
-        )
-        print("建立圖表完成")
+            cells=dict(
+                values=[df['血液常規檢查'], df['標準範圍']],
+                line_color='white',
+                fill=dict(color='white'),
+                font=dict(color='#0B1013', size=10),
+                align="left")
+        ),
+        row=3, col=1
+    )
 
-        # fig.uate_layout(height=800,width=1100,showlegend=False,template='simple_white',title_text="病人基本資料")
-        # --------------------------------------------------------------------------------------------------------------#
+    fig.uate_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
 
-        # --血液標準--
-        print("讀取血液報告")
-        df = pd.read_csv("./血液檢查標準.csv")
+    print('匯出圖片 生理資訊 開始')
+    fig.write_image('./static/Patient_Base.png', scale=3)
+    print('匯出圖片 生理資訊 結束')
+    # fig.show()
+    # --------------------------------------------------------------------------------------------------------------#
 
-        fig.add_trace(
-            go.Table(
-                header=dict(
-                    values=['血液常規檢查', '標準範圍'],
-                    line_color='#828282',
-                    fill_color='white',
-                    font=dict(color='#0B1013', size=10),
-                    align="center"
-                ),
-                cells=dict(
-                    values=[df['血液常規檢查'], df['標準範圍']],
-                    line_color='white',
-                    fill=dict(color='white'),
-                    font=dict(color='#0B1013', size=10),
-                    align="left")
-            ),
-            row=3, col=1
-        )
+    # --BP-BU--
+    # 範圍設定
+    print('病人血壓血糖資訊開始')
+    if max(view_ph_list) > 140:
+        y_maxhigh = max(view_ph_list) + 10
+    else:
+        y_maxhigh = 150
 
-        fig.uate_layout(height=700, width=600, showlegend=False, title_text="病人基本資料")
+    if min(view_ph_list) < 100:
+        y_minhigh = min(view_ph_list) - 10
+    else:
+        y_minhigh = 50
 
-        print('匯出圖片 生理資訊 開始')
-        fig.write_image('./static/Patient_Base.png', scale=3)
-        print('匯出圖片 生理資訊 結束')
-        # fig.show()
-        # --------------------------------------------------------------------------------------------------------------#
+    if max(view_pl_list) > 90:
+        y_maxlow = max(view_pl_list) + 10
+    else:
+        y_maxlow = 110
 
-        # --BP-BU--
-        # 範圍設定
-        print('病人血壓血糖資訊開始')
-        if max(view_ph_list) > 140:
-            y_maxhigh = max(view_ph_list) + 10
-        else:
-            y_maxhigh = 150
+    if max(view_bs_list) > 100:
+        y_maxbu = max(view_bs_list) + 10
+    else:
+        y_maxbu = 120
 
-        if min(view_ph_list) < 100:
-            y_minhigh = min(view_ph_list) - 10
-        else:
-            y_minhigh = 50
+    figB = make_subplots(
+        rows=3, cols=1,
+        #     shared_xaxes=True,
+        #     shared_yaxes=True,
+        #     vertical_spacing=0.06,
+        #     horizontal_spacing=0.06,
+        #     specs=[[{"type": "table"}],
+        #            [{"type": "table"}],
+        #            [{"type": "table"}],],
+        row_heights=[3, 3, 3],
+        #     column_widths=[0.4, 0.5],
+        subplot_titles=("收縮壓", "舒張壓", "血糖"))
 
-        if max(view_pl_list) > 90:
-            y_maxlow = max(view_pl_list) + 10
-        else:
-            y_maxlow = 110
+    # BP收縮壓
+    figB.add_trace(go.Scatter(x=datelist,
+                                y=view_ph_list,
+                                mode='lines+markers',
+                                # marker=dict(color= '#FEDFE1'),
+                                # line=dict(color='#A2DB84', width=3),
+                                name='收縮壓'),
+                    row=1, col=1)
+    figB.add_hline(y=100, line_color='red', row=1, col=1)
+    figB.add_hline(y=140, line_color='red', row=1, col=1)
+    figB.add_hrect(y0=100, y1=y_minhigh, line_width=0, fillcolor="red", opacity=0.1, row=1, col=1)
+    figB.add_hrect(y0=140, y1=y_maxhigh, line_width=0, fillcolor="red", opacity=0.1, row=1, col=1)
 
-        if max(view_bs_list) > 100:
-            y_maxbu = max(view_bs_list) + 10
-        else:
-            y_maxbu = 120
+    # BP舒張壓
+    figB.add_trace(go.Scatter(x=datelist,
+                                y=view_pl_list,
+                                mode='lines+markers',
+                                # marker=dict(color= '#E9CD4C'),
+                                # line=dict(color='#E9CD4C', width=3),
+                                name='舒張壓'),
+                    row=2, col=1)
+    figB.add_hline(y=90, line_color='red', row=2, col=1)
+    figB.add_hrect(y0=90, y1=y_maxlow, line_width=0, fillcolor="red", opacity=0.1, row=2, col=1)
 
-        figB = make_subplots(
-            rows=3, cols=1,
-            #     shared_xaxes=True,
-            #     shared_yaxes=True,
-            #     vertical_spacing=0.06,
-            #     horizontal_spacing=0.06,
-            #     specs=[[{"type": "table"}],
-            #            [{"type": "table"}],
-            #            [{"type": "table"}],],
-            row_heights=[3, 3, 3],
-            #     column_widths=[0.4, 0.5],
-            subplot_titles=("收縮壓", "舒張壓", "血糖"))
+    # BU血糖
+    figB.add_trace(go.Scatter(x=datelist,
+                                y=view_bs_list,
+                                mode='lines+markers',
+                                # marker=dict(color= [BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor]),
+                                # line=dict(color='#B5CAA0', width=3),
+                                name='血糖'),
+                    row=3, col=1)
+    figB.add_hline(y=100, line_color='red', row=3, col=1)
+    figB.add_hrect(y0=100, y1=y_maxbu, line_width=0, fillcolor="red", opacity=0.1, row=3, col=1)
 
-        # BP收縮壓
-        figB.add_trace(go.Scatter(x=datelist,
-                                  y=view_ph_list,
-                                  mode='lines+markers',
-                                  # marker=dict(color= '#FEDFE1'),
-                                  # line=dict(color='#A2DB84', width=3),
-                                  name='收縮壓'),
-                       row=1, col=1)
-        figB.add_hline(y=100, line_color='red', row=1, col=1)
-        figB.add_hline(y=140, line_color='red', row=1, col=1)
-        figB.add_hrect(y0=100, y1=y_minhigh, line_width=0, fillcolor="red", opacity=0.1, row=1, col=1)
-        figB.add_hrect(y0=140, y1=y_maxhigh, line_width=0, fillcolor="red", opacity=0.1, row=1, col=1)
+    figB.uate_layout(height=700, width=600, showlegend=False, template='simple_white')
+    # figB.show()
+    print('血液圖片匯出 開始')
+    figB.write_image('./static/Patient_BPBU.png', scale=3)
+    print('血液圖片匯出 結束')
 
-        # BP舒張壓
-        figB.add_trace(go.Scatter(x=datelist,
-                                  y=view_pl_list,
-                                  mode='lines+markers',
-                                  # marker=dict(color= '#E9CD4C'),
-                                  # line=dict(color='#E9CD4C', width=3),
-                                  name='舒張壓'),
-                       row=2, col=1)
-        figB.add_hline(y=90, line_color='red', row=2, col=1)
-        figB.add_hrect(y0=90, y1=y_maxlow, line_width=0, fillcolor="red", opacity=0.1, row=2, col=1)
+    img1 = Image.open("./static/Patient_Base.png")
+    # img1 = img1.crop((10, 10, 650, 155))   #img1 裁切
+    img2 = Image.open("./static/Patient_BPBU.png")
 
-        # BU血糖
-        figB.add_trace(go.Scatter(x=datelist,
-                                  y=view_bs_list,
-                                  mode='lines+markers',
-                                  # marker=dict(color= [BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor,BPcolor]),
-                                  # line=dict(color='#B5CAA0', width=3),
-                                  name='血糖'),
-                       row=3, col=1)
-        figB.add_hline(y=100, line_color='red', row=3, col=1)
-        figB.add_hrect(y0=100, y1=y_maxbu, line_width=0, fillcolor="red", opacity=0.1, row=3, col=1)
+    result = Image.new(img1.mode, (1800, 4200))
+    result.paste(img1, box=(0, 0))
+    result.paste(img2, box=(0, 1900))
+    result.save(f"./static/{line_id}.png")
+    result.save("./static/Patient01_dashboard_1.png")
+    result.thumbnail((180, 350))
+    result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
 
-        figB.uate_layout(height=700, width=600, showlegend=False, template='simple_white')
-        # figB.show()
-        print('血液圖片匯出 開始')
-        figB.write_image('./static/Patient_BPBU.png', scale=3)
-        print('血液圖片匯出 結束')
-
-        img1 = Image.open("./static/Patient_Base.png")
-        # img1 = img1.crop((10, 10, 650, 155))   #img1 裁切
-        img2 = Image.open("./static/Patient_BPBU.png")
-
-        result = Image.new(img1.mode, (1800, 4200))
-        result.paste(img1, box=(0, 0))
-        result.paste(img2, box=(0, 1900))
-        result.save(f"./static/{line_id}.png")
-        result.save("./static/Patient01_dashboard_1.png")
-        result.thumbnail((180, 350))
-        result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
-
-        # result = Image.new(img1.mode, (3500, 2200))
-        # result.paste(img1, box=(0, 0))
-        # result.paste(img2, box=(1800, 0))
-        # result.save(f"./static/{line_id}.png")
-        # result.save("./static/Patient01_dashboard_1.png")
-        # result.thumbnail((350, 220))
-        # result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
-
-
-    except:
-        exception_type, exception, exc_tb = sys.exc_info()
-        print("sql畫圖錯誤", exception)
+    # result = Image.new(img1.mode, (3500, 2200))
+    # result.paste(img1, box=(0, 0))
+    # result.paste(img2, box=(1800, 0))
+    # result.save(f"./static/{line_id}.png")
+    # result.save("./static/Patient01_dashboard_1.png")
+    # result.thumbnail((350, 220))
+    # result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
 
 
 # def manageForm(event, mtext):
