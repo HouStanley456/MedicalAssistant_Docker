@@ -12,13 +12,14 @@ from urllib.parse import parse_qsl
 import string
 from visualition import drawpic
 import json
-import mysql.connector
+
 from datetime import datetime, timedelta, timezone
 import sys
 from logging import error
 from mysql.connector import connection
 import mysql.connector
 from mysql.connector import Error
+import mysql.connector
 from datetime import date
 
 import random

@@ -25,7 +25,7 @@ def showdata(lineid):
     # 查詢語句，選出employee表中的所有資料
     # lineid = "'ytw00QqxJ3o3KMGUwyE7fF5WFnbxtz4H'" #輸入對向的lineid
     sql = '''
-    select *,count(d.recordtime) from (select * from healthinfo where lineid ={id} order by recordtime) d group by d.recordtime order by d.recordtime
+    select *,count(d.recordtime) from (select * from healthinfo where lineid is {id} order by recordtime) d group by d.recordtime order by d.recordtime
     '''.format(id=lineid)
     print(sql)
     # read_sql_query的兩個引數: sql語句， 資料庫連線
