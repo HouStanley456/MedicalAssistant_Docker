@@ -32,4 +32,4 @@ mysql-connector-python==8.0.26
 pandas==1.1.5
 plotly==5.4.0
 sqlalchemy==1.4.28
-
+openpyxl
