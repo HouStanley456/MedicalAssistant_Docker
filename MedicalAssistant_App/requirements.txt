@@ -35,3 +35,4 @@ sqlalchemy==1.4.28
 openpyxl
 kaleido
 PIT
+chart_studio
