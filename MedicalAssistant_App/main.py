@@ -13,6 +13,7 @@ import string
 from visualition import drawpic
 import json
 
+
 from datetime import datetime, timedelta, timezone
 import sys
 from logging import error
@@ -94,7 +95,7 @@ def callback():
 @app.route("/photo/<imageId>.png")
 def get_frame(imageId):
     # //去对应的文件夹找到对应名字的图片
-    with open('./static/{}.png'.format(imageId), 'rb') as f:
+    with open(parent_dir+'/static/{}.png'.format(imageId), 'rb') as f:
         image = f.read()
         # //返回给用户
         resp = Response(image, mimetype="image/png")
@@ -109,7 +110,7 @@ def handle_pic(event):
         # 設定圖片命名
         image_content = line_bot_api.get_message_content(event.message.id)
         image_name = event.message.id
-        path = "./static/" + image_name + ".png"
+        path = parent_dir+"/static/" + image_name + ".png"
         # 下載圖片檔
         with open(path, 'wb') as fd:
             for chunk in image_content.iter_content():
@@ -228,7 +229,7 @@ def handle_message(event):
 @app.route('/test/<line_id>')
 def drawpic(line_id):
     createHealtImage(line_id)  ###畫圖
-    path = "./static/" + line_id + ".png"
+    path = parent_dir+"/static/" + line_id + ".png"
     url = ngrokpath + path[1::]
     print("準備讀取圖片位置:", url)
     image_message = ImageSendMessage(
@@ -331,7 +332,7 @@ def handle_message(event):
                     if hasUse: ### liff後
                         createHealtImage(line_id)  ###畫圖
 
-                        path = "./static/" + line_id + ".png"
+                        path = parent_dir+"/static/" + line_id + ".png"
                         url = ngrokpath + path[1::]
                         print("準備讀取圖片位置:", url)
                         image_message = ImageSendMessage(
@@ -345,7 +346,7 @@ def handle_message(event):
                     # lineid = "'ytw00QqxJ3o3KMGUwyE7fF5WFnbxtz4H'"
                     # messageid = event.message.id
                     # drawpic(lineid, messageid)
-                    # path = "./static/" + messageid + ".png"
+                    # path = parent_dir+"/static/" + messageid + ".png"
                     # url = "http://10.2.14.62:5004/" + path[1::]
                     # print(url)
                     # image_message = ImageSendMessage(
@@ -1006,7 +1007,8 @@ def createHealtImage(line_id):
 
     # --血液標準--
     print("讀取血液報告")
-    df = pd.read_csv("./血液檢查標準.csv")
+    
+    df = pd.read_csv( parent_dir+ "/blood.csv")
 
     fig.add_trace(
         go.Table(
@@ -1031,7 +1033,7 @@ def createHealtImage(line_id):
 
     print('匯出圖片 生理資訊 開始')
     img_bytes = fig.to_image(format='png')
-    with open("./static/Patient_Base.png", 'wb' ) as  f:
+    with open(parent_dir+"/static/Patient_Base.png", 'wb') as  f:
         f.write(img_bytes)
 
     print('匯出圖片 生理資訊 結束')
@@ -1113,30 +1115,30 @@ def createHealtImage(line_id):
     # figB.show()
     print('血液圖片匯出 開始')
     img_bytes = figB.to_image(format='png')
-    with open("./static/Patient_BPBU.png", 'wb' ) as  f:
+    with open(parent_dir+"/static/Patient_BPBU.png", 'wb' ) as  f:
         f.write(img_bytes)
     
     print('血液圖片匯出 結束')
 
-    img1 = Image.open("./static/Patient_Base.png")
+    img1 = Image.open(parent_dir+"/static/Patient_Base.png")
     # img1 = img1.crop((10, 10, 650, 155))   #img1 裁切
-    img2 = Image.open("./static/Patient_BPBU.png")
+    img2 = Image.open(parent_dir+"/static/Patient_BPBU.png")
 
     result = Image.new(img1.mode, (600, 1400))
     result.paste(img1, box=(0, 0))
     result.paste(img2, box=(0, 633))
-    result.save(f"./static/{line_id}.png")
-    result.save("./static/Patient01_dashboard_1.png")
+    result.save(parent_dir+f"/static/{line_id}.png")
+    result.save(parent_dir+"/static/Patient01_dashboard_1.png")
     result.thumbnail((180, 350))
-    result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
+    result.save(parent_dir+f"/static/{line_id}_tiny.png", quality=65, subsampling=0)
 
     # result = Image.new(img1.mode, (3500, 2200))
     # result.paste(img1, box=(0, 0))
     # result.paste(img2, box=(1800, 0))
-    # result.save(f"./static/{line_id}.png")
-    # result.save("./static/Patient01_dashboard_1.png")
+    # result.save(fparent_dir+"/static/{line_id}.png")
+    # result.save(parent_dir+"/static/Patient01_dashboard_1.png")
     # result.thumbnail((350, 220))
-    # result.save(f"./static/{line_id}_tiny.png", quality=65, subsampling=0)
+    # result.save(fparent_dir+"/static/{line_id}_tiny.png", quality=65, subsampling=0)
 
 
 # def manageForm(event, mtext):
