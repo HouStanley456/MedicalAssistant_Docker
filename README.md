@@ -1,3 +1,13 @@
+部屬工具:
+
+     *Docker
+     *Google Cloud Platform
+          -Google Storage
+          -Google Computer Engine
+          -Google Cloud Run
+          -Google SQL
+
+
 資料夾內容：
 
      MedicalAssistant_app : Line程式碼
