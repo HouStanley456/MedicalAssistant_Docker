@@ -1,8 +1,8 @@
 資料夾內容：
 
      MedicalAssistant_app : Line程式碼
-               設定config.ini檔案
-               Cloud Storage金鑰
+            -設定config.ini檔案
+            -Cloud Storage金鑰
      Model_SkinPredict : 皮膚模型
      Model_TextPredict : 文字模型
      
