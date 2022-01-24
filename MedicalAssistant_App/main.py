@@ -142,8 +142,9 @@ def handle_pic(event):
         blob = bucket.get_blob(BUCKER_URL)
 
         # 傳入資源網址，並預測取得結果
+	
         print('public url', blob.public_url)
-        result = requests.get(vmurl +':7777/'+ blob.public_url).text
+        result = requests.get(config.get('gcp','vmurl_skin') +':7777/'+ blob.public_url).text
         print("預測結果是" + result)
 
         line_id = event.source.user_id
@@ -426,7 +427,7 @@ def handle_message(event):
                     is_last_two_bert = lastTwoSentence[1][0] == '我想進一步了解我的症狀'
 
                 if is_last_one_bert:
-                    pretext = requests.get(vmurl +':6666/'+ mtext).text
+                    pretext = requests.get(config.get('gcp','vmurl_text') +':6666/'+ mtext).text
 			
                     setChatSQL(line_id, event.message.id, 1, event.message.text, pretext)
                     line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="傳送地圖(Location)會得到附近星數最高且評論最多的醫院"), TextSendMessage(text=pretext, quick_reply=QuickReply(
